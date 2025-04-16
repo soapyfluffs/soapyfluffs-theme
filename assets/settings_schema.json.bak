@@ -1,0 +1,94 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Wokiee",
+    "theme_version": "1.0",
+    "theme_author": "Your Name",
+    "theme_documentation_url": "https://example.com",
+    "theme_support_url": "https://example.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_body_bg",
+        "label": "Background color",
+        "default": "#FAF9F6"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary color",
+        "default": "#E6E6FA"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary color",
+        "default": "#FFDAB9"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent color",
+        "default": "#DAA520"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_base_font",
+        "label": "Base font",
+        "default": "Poppins"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "label": "Header font",
+        "default": "Playfair Display"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "layout_width",
+        "label": "Layout width",
+        "min": 960,
+        "max": 1600,
+        "step": 10,
+        "unit": "px",
+        "default": 1200
+      }
+    ]
+  },
+  {
+    "name": "Urgency Features",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_countdown_timer",
+        "label": "Show Countdown Timer on Homepage",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "countdown_timer_date",
+        "label": "Countdown Timer End Date (YYYY-MM-DD)",
+        "default": "2025-04-20"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_ohio_badge",
+        "label": "Show Handmade in Ohio Badge",
+        "default": true
+      }
+    ]
+  }
+]

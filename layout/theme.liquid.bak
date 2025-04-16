@@ -6,12 +6,18 @@
     <meta name="description" content="Indulge in Soapy Fluffs’ handmade soaps, bath bombs, and subscription boxes. Join our Founders Box for 10% off forever—only 50 spots!">
     <meta name="keywords" content="handmade soaps Ohio, luxury bath subscription, natural bath products">
     <title>Soapy Fluffs | Ohio-Made Luxury Soaps & Subscription Boxes</title>
+    <!-- Google Fonts for Playfair Display (headings) and Poppins (body) -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <!-- Custom CSS for Lovable.ai-inspired styling -->
     <link rel="stylesheet" href="{{ 'custom.css' | asset_url }}">
+    <!-- Shopify Header Content (required for scripts and styles) -->
     {{ content_for_header }}
 </head>
 <body>
+    <!-- Main Content Area -->
     {{ content_for_layout }}
+
+    <!-- Schema Markup for SEO to improve search visibility -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -19,21 +25,35 @@
         "name": "Soapy Fluffs",
         "url": "https://www.soapyfluffs.com",
         "description": "Ohio-made luxury handmade soaps, bath bombs, and subscription boxes. Join our Founders Box for 10% off forever—only 50 spots!",
-        "address": {"@type": "PostalAddress", "addressLocality": "Ohio", "addressCountry": "US"},
-        "potentialAction": {"@type": "SubscribeAction", "target": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"}
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Ohio",
+            "addressCountry": "US"
+        },
+        "potentialAction": {
+            "@type": "SubscribeAction",
+            "target": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"
+        }
     }
     </script>
+
+    <!-- Countdown Timer (Dynamic based on settings_schema.json) -->
     {% if settings.show_countdown_timer %}
     <div class="countdown-timer" style="text-align: center; padding: 20px; background-color: #E6E6FA; color: #333;">
         <h3>Hurry! Offer Ends Soon!</h3>
         <div id="countdown"></div>
         <script>
+            // Countdown timer logic
             const endDate = new Date("{{ settings.countdown_timer_date }}T23:59:59");
             const countdown = document.getElementById("countdown");
             const interval = setInterval(() => {
                 const now = new Date();
                 const distance = endDate - now;
-                if (distance < 0) { clearInterval(interval); countdown.innerHTML = "Offer Expired!"; return; }
+                if (distance < 0) {
+                    clearInterval(interval);
+                    countdown.innerHTML = "Offer Expired!";
+                    return;
+                }
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -43,10 +63,13 @@
         </script>
     </div>
     {% endif %}
+
+    <!-- Handmade in Ohio Badge (Dynamic based on settings_schema.json) -->
     {% if settings.show_ohio_badge %}
     <div class="ohio-badge" style="text-align: center; padding: 10px;">
         <span style="background-color: #DAA520; color: #333; padding: 5px 10px; border-radius: 5px; font-family: 'Poppins', sans-serif;">Handmade in Ohio</span>
     </div>
     {% endif %}
 </body>
+<link rel="stylesheet" href="{{ 'custom.css' | asset_url }}">
 </html>
