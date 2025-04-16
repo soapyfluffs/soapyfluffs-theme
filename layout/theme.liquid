@@ -1,52 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="no-js" lang="{{ shop.locale }}" dir="{{ settings.text_direction }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Indulge in Soapy Fluffs’ handmade soaps, bath bombs, and subscription boxes. Join our Founders Box for 10% off forever—only 50 spots!">
-    <meta name="keywords" content="handmade soaps Ohio, luxury bath subscription, natural bath products">
-    <title>Soapy Fluffs | Ohio-Made Luxury Soaps & Subscription Boxes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ 'custom.css' | asset_url }}">
-    {{ content_for_header }}
+  <!-- Basic page needs -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Title and description -->
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description | escape }}">
+
+  <!-- SEO -->
+  {% if template contains 'product' %}
+    {% if product.metafields.global.description_tag %}
+      <meta name="description" content="{{ product.metafields.global.description_tag }}">
+    {% endif %}
+  {% endif %}
+
+  <!-- Helpers -->
+  {{ content_for_header }}
+
+  <!-- CSS -->
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {{ 'weglot_app.css' | asset_url | stylesheet_tag }}
+  {% if settings.rtl_enabled %}
+    {{ 'style-rtl.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+
+  <!-- Favicon -->
+  {% if settings.use_favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {% endif %}
+
+  <!-- Fonts -->
+  {% if settings.google_font_links != blank %}
+    {{ settings.google_font_links }}
+  {% endif %}
+  {% if settings.google_font_styles != blank %}
+    {{ settings.google_font_styles }}
+  {% endif %}
+
+  <!-- JS Variables -->
+  <script>
+    window.wokiee = window.wokiee || {};
+    window.wokiee.currency = {{ shop.currency | json }};
+    window.wokiee.money_format = {{ shop.money_format | json }};
+    window.wokiee.shop_url = {{ shop.url | json }};
+  </script>
 </head>
-<body>
+<body class="{% if settings.use_boxed %}boxed{% endif %} {% if settings.use_rtl %}rtl{% endif %}">
+  <!-- Preloader -->
+  {% if settings.show_preloader %}
+    {% render 'main-loader' %}
+  {% endif %}
+
+  <!-- Header -->
+  {% if settings.header_design == 'header_type_1' %}
+    {% section 'header-template' %}
+  {% elsif settings.header_design == 'header_type_2' %}
+    {% section 'header-template-2' %}
+  {% elsif settings.header_design == 'header_type_3' %}
+    {% section 'header-template-3' %}
+  {% elsif settings.header_design == 'header_type_4' %}
+    {% section 'header-template-4' %}
+  {% endif %}
+
+  <!-- Main Content -->
+  <div class="page-wrapper">
+    {% if settings.show_breadcrumbs and 'breadcrumbs' | snippet_exists %}
+      {% render 'breadcrumbs' %}
+    {% endif %}
     {{ content_for_layout }}
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "OnlineStore",
-        "name": "Soapy Fluffs",
-        "url": "https://www.soapyfluffs.com",
-        "description": "Ohio-made luxury handmade soaps, bath bombs, and subscription boxes. Join our Founders Box for 10% off forever—only 50 spots!",
-        "address": {"@type": "PostalAddress", "addressLocality": "Ohio", "addressCountry": "US"},
-        "potentialAction": {"@type": "SubscribeAction", "target": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"}
-    }
-    </script>
-    {% if settings.show_countdown_timer %}
-    <div class="countdown-timer" style="text-align: center; padding: 20px; background-color: #E6E6FA; color: #333;">
-        <h3>Hurry! Offer Ends Soon!</h3>
-        <div id="countdown"></div>
-        <script>
-            const endDate = new Date("{{ settings.countdown_timer_date }}T23:59:59");
-            const countdown = document.getElementById("countdown");
-            const interval = setInterval(() => {
-                const now = new Date();
-                const distance = endDate - now;
-                if (distance < 0) { clearInterval(interval); countdown.innerHTML = "Offer Expired!"; return; }
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }, 1000);
-        </script>
+  </div>
+
+  <!-- Footer -->
+  {% section 'footer-template' %}
+
+  <!-- Modals -->
+  {% render 'modal-newsletter' %}
+  {% render 'modal-quickview' %}
+  {% render 'modal-addtocart' %}
+
+  <!-- Back to Top -->
+  {% if settings.show_back_to_top_button %}
+    <div class="back-to-top">
+      <span class="icon-arrow-up"></span>
     </div>
-    {% endif %}
-    {% if settings.show_ohio_badge %}
-    <div class="ohio-badge" style="text-align: center; padding: 10px;">
-        <span style="background-color: #DAA520; color: #333; padding: 5px 10px; border-radius: 5px; font-family: 'Poppins', sans-serif;">Handmade in Ohio</span>
-    </div>
-    {% endif %}
+  {% endif %}
+
+  <!-- Scripts -->
+  {{ 'vendor.min.js' | asset_url | script_tag }}
+  {{ 'theme.min.js' | asset_url | script_tag }}
+  {% if settings.helper_info != blank %}
+    <script src="{{ settings.helper_info }}"></script>
+  {% endif %}
 </body>
 </html>
