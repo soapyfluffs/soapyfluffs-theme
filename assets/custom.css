@@ -1,11 +1,57 @@
 /* Custom CSS for Soapy Fluffs to match Lovable.ai mockup */
-body { background-color: #FAF9F6; }
-h1, h2, h3 { font-family: 'Playfair Display', serif; color: #DAA520; }
-p, a, span { font-family: 'Poppins', sans-serif; color: #333; }
-.hero-section { background-color: #E6E6FA; padding: 60px 20px; }
-.hero-section .btn-primary { background-color: #DAA520; color: #333; border: none; padding: 12px 24px; transition: background-color 0.3s ease; }
-.hero-section .btn-primary:hover { background-color: #FFDAB9; }
-.product-card { border: 1px solid #E6E6FA; border-radius: 8px; transition: transform 0.3s ease; }
-.product-card:hover { transform: scale(1.05); }
-.about-section { background-color: #FFDAB9; padding: 40px 20px; }
-footer { background-color: #E6E6FA; color: #333; padding: 20px; text-align: center; }
+body {
+    background-color: #FAF9F6;
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    color: #DAA520;
+}
+
+p, a, span {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #E6E6FA;
+    padding: 60px 20px;
+}
+
+.hero-section .btn-primary {
+    background-color: #DAA520;
+    color: #333;
+    border: none;
+    padding: 12px 24px;
+    transition: background-color 0.3s ease;
+}
+
+.hero-section .btn-primary:hover {
+    background-color: #FFDAB9;
+}
+
+/* Product Cards */
+.product-card {
+    border: 1px solid #E6E6FA;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+/* About Section */
+.about-section {
+    background-color: #FFDAB9;
+    padding: 40px 20px;
+}
+
+/* Footer */
+footer {
+    background-color: #E6E6FA;
+    color: #333;
+    padding: 20px;
+    text-align: center;
+}
