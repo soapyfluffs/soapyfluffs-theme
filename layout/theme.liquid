@@ -1,75 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html class="no-js" lang="{{ shop.locale }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Indulge in Soapy Fluffs’ handmade soaps, bath bombs, and subscription boxes. Join our Founders Box for 10% off forever—only 50 spots!">
-    <meta name="keywords" content="handmade soaps Ohio, luxury bath subscription, natural bath products">
-    <title>Soapy Fluffs | Ohio-Made Luxury Soaps & Subscription Boxes</title>
-    <!-- Google Fonts for Playfair Display (headings) and Poppins (body) -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-    <!-- Custom CSS for Lovable.ai-inspired styling -->
-    <link rel="stylesheet" href="{{ 'custom.css' | asset_url }}">
-    <!-- Shopify Header Content (required for scripts and styles) -->
-    {{ content_for_header }}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#4ea7c4">
+  <link rel="canonical" href="{{ canonical_url }}">
+  
+  {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {%- endif -%}
+
+  {%- capture seo_title -%}
+    {%- if template == 'search' and search.performed == true -%}
+      {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+    {%- else -%}
+      {{ page_title }}
+    {%- endif -%}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- assign escaped_page_title = page_title | escape -%}
+    {%- unless escaped_page_title contains shop.name -%}
+      &ndash; {{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+  <title>{{ seo_title }}</title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% include 'social-meta-tags' %}
+  {% include 'css-variables' %}
+
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'custom-styles.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    window.theme = window.theme || {};
+    theme.strings = {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }}
+    };
+    theme.settings = {
+      cartType: {{ settings.cart_type | json }}
+    };
+  </script>
+
+  {{ content_for_header }}
 </head>
-<body>
-    <!-- Main Content Area -->
+
+<body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}">
+  <a class="skip-to-content-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+
+  <main id="MainContent" class="content-for-layout" role="main">
     {{ content_for_layout }}
+  </main>
 
-    <!-- Schema Markup for SEO to improve search visibility -->
-    <script type="application/ld+json">
+  {% section 'footer' %}
+
+  <script type="application/json" data-cart-config>
     {
-        "@context": "https://schema.org",
-        "@type": "OnlineStore",
-        "name": "Soapy Fluffs",
-        "url": "https://www.soapyfluffs.com",
-        "description": "Ohio-made luxury handmade soaps, bath bombs, and subscription boxes. Join our Founders Box for 10% off forever—only 50 spots!",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Ohio",
-            "addressCountry": "US"
-        },
-        "potentialAction": {
-            "@type": "SubscribeAction",
-            "target": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"
-        }
+      "cart": {{ cart | json }},
+      "template": {{ template | json }},
+      "upsell_products": {{ settings.cart_upsell_products | json }},
+      "cart_action": {{ settings.cart_action | json }},
+      "money_format": {{ shop.money_format | json }}
     }
-    </script>
+  </script>
 
-    <!-- Countdown Timer (Dynamic based on settings_schema.json) -->
-    {% if settings.show_countdown_timer %}
-    <div class="countdown-timer" style="text-align: center; padding: 20px; background-color: #E6E6FA; color: #333;">
-        <h3>Hurry! Offer Ends Soon!</h3>
-        <div id="countdown"></div>
-        <script>
-            // Countdown timer logic
-            const endDate = new Date("{{ settings.countdown_timer_date }}T23:59:59");
-            const countdown = document.getElementById("countdown");
-            const interval = setInterval(() => {
-                const now = new Date();
-                const distance = endDate - now;
-                if (distance < 0) {
-                    clearInterval(interval);
-                    countdown.innerHTML = "Offer Expired!";
-                    return;
-                }
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }, 1000);
-        </script>
-    </div>
-    {% endif %}
-
-    <!-- Handmade in Ohio Badge (Dynamic based on settings_schema.json) -->
-    {% if settings.show_ohio_badge %}
-    <div class="ohio-badge" style="text-align: center; padding: 10px;">
-        <span style="background-color: #DAA520; color: #333; padding: 5px 10px; border-radius: 5px; font-family: 'Poppins', sans-serif;">Handmade in Ohio</span>
-    </div>
-    {% endif %}
+  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-scripts.js' | asset_url }}" defer="defer"></script>
 </body>
-<link rel="stylesheet" href="{{ 'custom.css' | asset_url }}">
 </html>
