@@ -1,0 +1,237 @@
+<!-- /snippets/social-meta-tags.liquid -->
+{% comment %}
+  Enhanced SEO and Social Meta Tags for SoapyFluffs
+  Optimized for improved search visibility and social sharing
+{% endcomment %}
+
+{%- assign og_title = page_title -%}
+{%- assign og_url = canonical_url -%}
+{%- assign og_type = 'website' -%}
+{%- assign og_description = page_description | default: shop.description | default: shop.name -%}
+
+{% comment %} Template specific overrides {% endcomment %}
+{% if request.page_type == 'product' %}
+  {%- assign og_title = product.title | strip_html -%}
+  {%- assign og_type = 'product' -%}
+  
+  {% comment %} Enhanced product description for SEO {% endcomment %}
+  {%- capture og_description -%}
+    {% if product.description contains '<p>' %}
+      {{ product.description | strip_html | truncatewords: 30 }}
+    {% else %}
+      {{ product.description | truncatewords: 30 }}
+    {% endif %}
+  {%- endcapture -%}
+  
+  {% if product.images.size > 0 %}
+    {%- capture og_image_tags -%}{% for image in product.images limit:3 -%}<meta property="og:image" content="http:{{ image.src | product_img_url: '1200x1200' }}">{% endfor -%}{% endcapture -%}
+    {%- capture og_image_secure_url_tags -%}{% for image in product.images limit:3 -%}<meta property="og:image:secure_url" content="https:{{ image.src | product_img_url: '1200x1200' }}">{% endfor -%}{% endcapture -%}
+  {% endif %}
+
+{% elsif request.page_type == 'article' %}
+  {%- assign og_title = article.title | strip_html -%}
+  {%- assign og_type = 'article' -%}
+  {%- assign og_description = article.excerpt_or_content | strip_html -%}
+  {% if article.image %}
+    {%- capture og_image_tags -%}<meta property="og:image" content="http:{{ article.image | img_url: '1200x1200' }}">{%- endcapture -%}
+    {%- capture og_image_secure_url_tags -%}<meta property="og:image:secure_url" content="https:{{ article.image | img_url: '1200x1200' }}">{%- endcapture -%}
+  {% endif %}
+
+{% elsif request.page_type == 'collection' %}
+  {%- assign og_title = collection.title | strip_html -%}
+  {%- assign og_type = 'product.group' -%}
+  
+  {% comment %} Enhanced collection description for SEO {% endcomment %}
+  {%- capture og_description -%}
+    {% if collection.description contains '<p>' %}
+      {{ collection.description | strip_html | truncatewords: 30 }}
+    {% else %}
+      {{ collection.description | truncatewords: 30 }}
+    {% endif %}
+    | Handmade Soaps by SoapyFluffs
+  {%- endcapture -%}
+  
+  {% if collection.image %}
+    {%- capture og_image_tags -%}<meta property="og:image" content="http:{{ collection.image | img_url: '1200x1200' }}">{%- endcapture -%}
+    {%- capture og_image_secure_url_tags -%}<meta property="og:image:secure_url" content="https:{{ collection.image | img_url: '1200x1200' }}">{%- endcapture -%}
+  {% endif %}
+
+{% elsif request.page_type == 'password' %}
+  {%- assign og_title = shop.name -%}
+  {%- assign og_url = shop.url -%}
+  {%- assign og_description = shop.description | default: shop.name -%}
+{% endif %}
+
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ og_url }}">
+<meta property="og:title" content="{{ og_title }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:description" content="{{ og_description }}">
+
+{% if request.page_type == 'product' %}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+  
+  {% comment %} Enhanced product availability metadata {% endcomment %}
+  <meta property="product:availability" content="{% if product.available %}in stock{% else %}out of stock{% endif %}">
+  <meta property="product:condition" content="new">
+  <meta property="product:brand" content="SoapyFluffs">
+  
+  {% comment %} Product tags as metadata {% endcomment %}
+  {% for tag in product.tags %}
+    <meta property="product:tag" content="{{ tag }}">
+  {% endfor %}
+{% endif %}
+
+{{ og_image_tags }}
+{{ og_image_secure_url_tags }}
+
+{% unless settings.social_twitter_link == blank %}
+  <meta name="twitter:site" content="{{ settings.social_twitter_link | split: 'twitter.com/' | last | prepend: '@' }}">
+{% endunless %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title }}">
+<meta name="twitter:description" content="{{ og_description }}">
+
+{% comment %} Enhanced Schema.org markup for improved search visibility {% endcomment %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ shop.name }}",
+  "url": "{{ shop.url }}",
+  "logo": "{{ settings.logo | img_url: 'master' }}",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "{{ shop.email }}",
+    "telephone": "{{ shop.phone }}",
+    "contactType": "customer service"
+  },
+  "sameAs": [
+    {% if settings.social_facebook_link != blank %}"{{ settings.social_facebook_link }}",{% endif %}
+    {% if settings.social_twitter_link != blank %}"{{ settings.social_twitter_link }}",{% endif %}
+    {% if settings.social_pinterest_link != blank %}"{{ settings.social_pinterest_link }}",{% endif %}
+    {% if settings.social_instagram_link != blank %}"{{ settings.social_instagram_link }}",{% endif %}
+    {% if settings.social_youtube_link != blank %}"{{ settings.social_youtube_link }}",{% endif %}
+    {% if settings.social_tiktok_link != blank %}"{{ settings.social_tiktok_link }}"{% endif %}
+  ]
+}
+</script>
+
+{% if request.page_type == 'product' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title }}",
+  "image": [
+    {% for image in product.images %}
+      "https:{{ image.src | img_url: '1200x1200' }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
+  "description": "{{ product.description | strip_html }}",
+  "sku": "{{ product.selected_or_first_available_variant.sku }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "SoapyFluffs"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ shop.url }}{{ product.url }}",
+    "priceCurrency": "{{ cart.currency.iso_code }}",
+    "price": "{{ product.price | divided_by: 100.00 }}",
+    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+    "seller": {
+      "@type": "Organization",
+      "name": "{{ shop.name }}"
+    }
+  }
+  {% if product.metafields.reviews.rating %}
+  ,
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.metafields.reviews.rating }}",
+    "reviewCount": "{{ product.metafields.reviews.rating_count }}"
+  }
+  {% endif %}
+}
+</script>
+{% endif %}
+
+{% if request.page_type == 'collection' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ collection.title }}",
+  {% if collection.image %}
+  "image": "https:{{ collection.image | img_url: '1200x1200' }}",
+  {% endif %}
+  "description": "{{ collection.description | strip_html }}"
+}
+</script>
+{% endif %}
+
+{% if request.page_type == 'article' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ article.title }}",
+  "image": "https:{{ article.image | img_url: '1200x1200' }}",
+  "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+  "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ article.author }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ shop.name }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ settings.logo | img_url: 'master' }}"
+    }
+  },
+  "description": "{{ article.excerpt_or_content | strip_html | truncatewords: 30 }}"
+}
+</script>
+{% endif %}
+
+{% comment %} Local Business Schema for improved local SEO {% endcomment %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "SoapyFluffs",
+  "image": "{{ settings.logo | img_url: 'master' }}",
+  "url": "{{ shop.url }}",
+  "telephone": "{{ shop.phone }}",
+  "email": "{{ shop.email }}",
+  "priceRange": "$$",
+  "description": "Handcrafted natural soaps made in Ohio by a male-owned business. Free sniffs with every purchase!",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Hamilton",
+    "addressRegion": "OH",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "39.3995",
+    "longitude": "-84.5613"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "opens": "09:00",
+    "closes": "17:00"
+  }
+}
+</script>

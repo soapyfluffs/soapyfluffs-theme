@@ -1,0 +1,175 @@
+{% comment %}
+  Brand Identity Header for SoapyFluffs - Based on Wokiee theme
+  Implements navy blue color scheme from product packaging
+{% endcomment %}
+
+<div class="brand-identity-header">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="brand-identity-header__logo-container">
+          {% if section.settings.logo != blank %}
+            <img 
+              src="{{ section.settings.logo | img_url: 'master' }}" 
+              alt="{{ shop.name }}" 
+              class="brand-identity-header__logo"
+              width="{{ section.settings.logo_width }}"
+              height="auto"
+              loading="lazy">
+          {% else %}
+            <h1 class="brand-identity-header__title">{{ shop.name }}</h1>
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="brand-identity-header__badges">
+          <div class="brand-badge male-owned-badge">
+            <span class="brand-badge__icon">♂</span>
+            <span class="brand-badge__text">Male-Owned Business</span>
+          </div>
+          
+          <div class="brand-badge ohio-made-badge">
+            <span class="brand-badge__icon">🏠</span>
+            <span class="brand-badge__text">Handmade in Ohio</span>
+          </div>
+          
+          <div class="brand-badge free-sniffs-badge">
+            <span class="brand-badge__icon">👃</span>
+            <span class="brand-badge__text">FREE SNIFFS</span>
+          </div>
+          
+          <div class="brand-badge trademark-badge">
+            <span class="brand-badge__icon">™</span>
+            <span class="brand-badge__text">Federally Trademarked</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .brand-identity-header {
+    background-color: #4ea7c4; /* Navy blue from packaging */
+    padding: 20px 0;
+    margin-bottom: 30px;
+  }
+  
+  .brand-identity-header__logo {
+    max-height: 80px;
+    width: auto;
+  }
+  
+  .brand-identity-header__title {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  .brand-identity-header__badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .brand-badge {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .brand-badge__icon {
+    margin-right: 5px;
+    font-size: 16px;
+  }
+  
+  .male-owned-badge {
+    background-color: #ffffff;
+    color: #4ea7c4;
+  }
+  
+  .ohio-made-badge {
+    background-color: #e0d5c1; /* Kraft paper color */
+    color: #333333;
+  }
+  
+  .free-sniffs-badge {
+    background-color: #f89c35; /* Orange accent from soap flower */
+    color: #ffffff;
+  }
+  
+  .trademark-badge {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  
+  @media (max-width: 767px) {
+    .brand-identity-header__badges {
+      justify-content: center;
+      margin-top: 15px;
+    }
+    
+    .brand-identity-header__logo-container {
+      text-align: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Brand Identity Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 140
+    },
+    {
+      "type": "checkbox",
+      "id": "show_male_owned_badge",
+      "label": "Show Male-Owned Badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ohio_made_badge",
+      "label": "Show Ohio-Made Badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_free_sniffs_badge",
+      "label": "Show Free Sniffs Badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trademark_badge",
+      "label": "Show Trademark Badge",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Identity Header",
+      "category": "Header"
+    }
+  ]
+}
+{% endschema %}

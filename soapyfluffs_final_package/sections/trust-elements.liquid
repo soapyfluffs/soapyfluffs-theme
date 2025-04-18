@@ -1,0 +1,460 @@
+{% comment %}
+  Trust Elements Section for SoapyFluffs - Based on Wokiee theme
+  Implements trust badges and customer testimonials
+{% endcomment %}
+
+<div class="trust-elements-section">
+  <div class="container">
+    <div class="trust-elements-section__header">
+      <h2 class="trust-elements-section__title">{{ section.settings.title }}</h2>
+      
+      {% if section.settings.subtitle != blank %}
+        <div class="trust-elements-section__subtitle">
+          {{ section.settings.subtitle }}
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="trust-badges">
+          <div class="trust-badges__header">
+            <h3 class="trust-badges__title">{{ section.settings.badges_title }}</h3>
+          </div>
+          
+          <div class="trust-badges__grid">
+            {% for block in section.blocks %}
+              {% if block.type == 'badge' %}
+                <div class="trust-badge">
+                  {% if block.settings.icon != blank %}
+                    <div class="trust-badge__icon-container">
+                      <img 
+                        src="{{ block.settings.icon | img_url: '120x120', crop: 'center' }}" 
+                        alt="{{ block.settings.title }}" 
+                        class="trust-badge__icon"
+                        width="60"
+                        height="60"
+                        loading="lazy">
+                    </div>
+                  {% endif %}
+                  
+                  <div class="trust-badge__content">
+                    <h4 class="trust-badge__title">{{ block.settings.title }}</h4>
+                    <div class="trust-badge__description">{{ block.settings.description }}</div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="testimonials">
+          <div class="testimonials__header">
+            <h3 class="testimonials__title">{{ section.settings.testimonials_title }}</h3>
+          </div>
+          
+          <div class="testimonials__slider js-testimonials-slider">
+            {% for block in section.blocks %}
+              {% if block.type == 'testimonial' %}
+                <div class="testimonial">
+                  <div class="testimonial__content">
+                    <div class="testimonial__quote">{{ block.settings.quote }}</div>
+                    
+                    <div class="testimonial__author">
+                      {% if block.settings.author_image != blank %}
+                        <div class="testimonial__author-image-container">
+                          <img 
+                            src="{{ block.settings.author_image | img_url: '100x100', crop: 'center' }}" 
+                            alt="{{ block.settings.author_name }}" 
+                            class="testimonial__author-image"
+                            width="50"
+                            height="50"
+                            loading="lazy">
+                        </div>
+                      {% endif %}
+                      
+                      <div class="testimonial__author-info">
+                        <div class="testimonial__author-name">{{ block.settings.author_name }}</div>
+                        
+                        {% if block.settings.author_title != blank %}
+                          <div class="testimonial__author-title">{{ block.settings.author_title }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {% if section.settings.show_guarantee %}
+      <div class="satisfaction-guarantee">
+        <div class="satisfaction-guarantee__icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 4L29.2533 14.8604L41.0696 16.5812L32.5348 24.8776L34.5066 36.6396L24 31.072L13.4934 36.6396L15.4652 24.8776L6.93037 16.5812L18.7467 14.8604L24 4Z" fill="#4ea7c4" stroke="#4ea7c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="satisfaction-guarantee__content">
+          <h3 class="satisfaction-guarantee__title">{{ section.settings.guarantee_title }}</h3>
+          <div class="satisfaction-guarantee__description">{{ section.settings.guarantee_description }}</div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .trust-elements-section {
+    padding: 60px 0;
+    background-color: #f9f7f4;
+  }
+  
+  .trust-elements-section__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .trust-elements-section__title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 10px;
+  }
+  
+  .trust-elements-section__subtitle {
+    font-size: 16px;
+    color: #666666;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .trust-badges__header,
+  .testimonials__header {
+    margin-bottom: 20px;
+  }
+  
+  .trust-badges__title,
+  .testimonials__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #4ea7c4;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .trust-badges__title:after,
+  .testimonials__title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #e0d5c1;
+  }
+  
+  .trust-badges__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .trust-badge {
+    display: flex;
+    align-items: flex-start;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .trust-badge:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .trust-badge__icon-container {
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+  
+  .trust-badge__icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+  
+  .trust-badge__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 5px;
+  }
+  
+  .trust-badge__description {
+    font-size: 14px;
+    color: #666666;
+  }
+  
+  .testimonial {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+  
+  .testimonial__quote {
+    font-size: 16px;
+    color: #333333;
+    font-style: italic;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 20px;
+  }
+  
+  .testimonial__quote:before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 30px;
+    color: #4ea7c4;
+    line-height: 1;
+  }
+  
+  .testimonial__author {
+    display: flex;
+    align-items: center;
+  }
+  
+  .testimonial__author-image-container {
+    margin-right: 15px;
+  }
+  
+  .testimonial__author-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .testimonial__author-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+  }
+  
+  .testimonial__author-title {
+    font-size: 14px;
+    color: #666666;
+  }
+  
+  .satisfaction-guarantee {
+    display: flex;
+    align-items: center;
+    background-color: #4ea7c4;
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 40px;
+  }
+  
+  .satisfaction-guarantee__icon {
+    margin-right: 20px;
+    flex-shrink: 0;
+  }
+  
+  .satisfaction-guarantee__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .satisfaction-guarantee__description {
+    font-size: 16px;
+    max-width: 800px;
+  }
+  
+  @media (max-width: 767px) {
+    .trust-badges__grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .testimonials {
+      margin-top: 40px;
+    }
+    
+    .satisfaction-guarantee {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .satisfaction-guarantee__icon {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust Elements",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Why Choose SoapyFluffs"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Handcrafted with care by a male-owned business in Ohio"
+    },
+    {
+      "type": "text",
+      "id": "badges_title",
+      "label": "Badges Title",
+      "default": "Our Promises"
+    },
+    {
+      "type": "text",
+      "id": "testimonials_title",
+      "label": "Testimonials Title",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_guarantee",
+      "label": "Show Satisfaction Guarantee",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "guarantee_title",
+      "label": "Guarantee Title",
+      "default": "100% Satisfaction Guarantee"
+    },
+    {
+      "type": "textarea",
+      "id": "guarantee_description",
+      "label": "Guarantee Description",
+      "default": "We stand behind the quality of our handcrafted soaps. If you're not completely satisfied with your purchase, we'll make it right."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Badge Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Badge Title",
+          "default": "Handmade in Ohio"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Badge Description",
+          "default": "Every soap is handcrafted in small batches in our Ohio workshop."
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Testimonial Quote",
+          "default": "I love SoapyFluffs soaps! The scents are amazing and my skin has never felt better. Plus, the free sniffs are such a fun touch!"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Sarah K."
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author Title",
+          "default": "Verified Customer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Elements",
+      "category": "Custom Content",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Handmade in Ohio",
+            "description": "Every soap is handcrafted in small batches in our Ohio workshop."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Natural Ingredients",
+            "description": "We use only the finest natural ingredients that are gentle on your skin."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Free Sniffs",
+            "description": "Every soap comes with our signature Free Sniffs guarantee."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Male-Owned Business",
+            "description": "Proudly bringing a unique perspective to the soap industry."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I love SoapyFluffs soaps! The scents are amazing and my skin has never felt better. Plus, the free sniffs are such a fun touch!",
+            "author_name": "Sarah K.",
+            "author_title": "Verified Customer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The subscription box is perfect for me. I get to try new scents every month and never run out of my favorite soaps.",
+            "author_name": "Michael T.",
+            "author_title": "Subscription Member"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

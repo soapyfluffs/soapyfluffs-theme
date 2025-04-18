@@ -1,0 +1,141 @@
+{% comment %}
+  Product Categorization Structure for SoapyFluffs - Based on Wokiee theme
+  Implements logical product categories and collection organization
+{% endcomment %}
+
+<div class="product-categories">
+  <div class="container">
+    <div class="product-categories__header">
+      <h2 class="product-categories__title">{{ section.settings.title }}</h2>
+      
+      {% if section.settings.subtitle != blank %}
+        <div class="product-categories__subtitle">
+          {{ section.settings.subtitle }}
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="row">
+      {% for block in section.blocks %}
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="category-card">
+            <a href="{{ block.settings.collection_url }}" class="category-card__link">
+              <div class="category-card__image-container">
+                {% if block.settings.image != blank %}
+                  <img 
+                    src="{{ block.settings.image | img_url: '600x600', crop: 'center' }}" 
+                    alt="{{ block.settings.title }}" 
+                    class="category-card__image"
+                    width="600"
+                    height="600"
+                    loading="lazy">
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag: 'category-card__image placeholder-svg' }}
+                {% endif %}
+              </div>
+              
+              <div class="category-card__content">
+                <h3 class="category-card__title">{{ block.settings.title }}</h3>
+                
+                {% if block.settings.product_count %}
+                  <div class="category-card__count">
+                    {% if block.settings.product_count == 1 %}
+                      1 product
+                    {% else %}
+                      {{ block.settings.product_count }} products
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Categories",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Shop By Category"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Browse our handcrafted soap collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "Essential Oil Soaps"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category Image"
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Collection URL"
+        },
+        {
+          "type": "number",
+          "id": "product_count",
+          "label": "Product Count (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Categories",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Essential Oil Soaps",
+            "collection_url": "/collections/essential-oil-soaps"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Moisturizing Soaps",
+            "collection_url": "/collections/moisturizing-soaps"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Exfoliating Soaps",
+            "collection_url": "/collections/exfoliating-soaps"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Gift Sets",
+            "collection_url": "/collections/gift-sets"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

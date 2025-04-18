@@ -1,0 +1,282 @@
+{% comment %}
+  Subscription Services Section for SoapyFluffs - Based on Wokiee theme
+  Highlights the three build-a-box subscription options
+{% endcomment %}
+
+<div class="subscription-services">
+  <div class="container">
+    <div class="subscription-services__header">
+      <h2 class="subscription-services__title">{{ section.settings.title }}</h2>
+      
+      {% if section.settings.subtitle != blank %}
+        <div class="subscription-services__subtitle">
+          {{ section.settings.subtitle }}
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="row">
+      {% for block in section.blocks %}
+        <div class="col-md-4">
+          <div class="subscription-box">
+            <div class="subscription-box__header">
+              <h3 class="subscription-box__title">{{ block.settings.title }}</h3>
+              
+              {% if block.settings.subtitle != blank %}
+                <div class="subscription-box__subtitle">
+                  {{ block.settings.subtitle }}
+                </div>
+              {% endif %}
+            </div>
+            
+            {% if block.settings.image != blank %}
+              <div class="subscription-box__image-container">
+                <img 
+                  src="{{ block.settings.image | img_url: '600x600', crop: 'center' }}" 
+                  alt="{{ block.settings.title }}" 
+                  class="subscription-box__image"
+                  width="600"
+                  height="600"
+                  loading="lazy">
+              </div>
+            {% endif %}
+            
+            <div class="subscription-box__price">
+              <span class="subscription-box__price-amount">{{ block.settings.price }}</span>
+              <span class="subscription-box__price-interval">{{ block.settings.interval }}</span>
+            </div>
+            
+            {% if block.settings.description != blank %}
+              <div class="subscription-box__description">
+                {{ block.settings.description }}
+              </div>
+            {% endif %}
+            
+            <div class="subscription-box__features">
+              {% for i in (1..5) %}
+                {% assign feature_key = 'feature_' | append: i %}
+                {% if block.settings[feature_key] != blank %}
+                  <div class="subscription-box__feature">
+                    <span class="subscription-box__feature-icon">✓</span>
+                    <span class="subscription-box__feature-text">{{ block.settings[feature_key] }}</span>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            
+            <a href="{{ block.settings.button_url }}" class="btn-primary subscription-box__button">
+              {{ block.settings.button_text }}
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="subscription-services__footer">
+      <div class="subscription-services__badges">
+        <div class="trust-badge">
+          <img src="{{ 'badge-handmade.png' | asset_url }}" alt="Handmade" class="trust-badge__icon">
+          <span class="trust-badge__text">Handmade in Ohio</span>
+        </div>
+        
+        <div class="trust-badge">
+          <img src="{{ 'badge-natural.png' | asset_url }}" alt="Natural Ingredients" class="trust-badge__icon">
+          <span class="trust-badge__text">Natural Ingredients</span>
+        </div>
+        
+        <div class="trust-badge">
+          <img src="{{ 'badge-free-shipping.png' | asset_url }}" alt="Free Shipping" class="trust-badge__icon">
+          <span class="trust-badge__text">Free Shipping on Subscriptions</span>
+        </div>
+      </div>
+      
+      {% if section.settings.testimonial != blank %}
+        <div class="subscription-services__testimonial">
+          <blockquote class="testimonial">
+            <p class="testimonial__quote">{{ section.settings.testimonial }}</p>
+            
+            {% if section.settings.testimonial_author != blank %}
+              <cite class="testimonial__author">{{ section.settings.testimonial_author }}</cite>
+            {% endif %}
+          </blockquote>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Subscription Services",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "SoapyFluffs Subscription Boxes"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Choose the perfect subscription for your soap needs"
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial",
+      "label": "Testimonial",
+      "default": "I love my monthly soap subscription! The scents are amazing and my skin has never felt better."
+    },
+    {
+      "type": "text",
+      "id": "testimonial_author",
+      "label": "Testimonial Author",
+      "default": "Sarah K., Verified Customer"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subscription",
+      "name": "Subscription Box",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Monthly Box"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Perfect for regular soap users"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$24.99"
+        },
+        {
+          "type": "text",
+          "id": "interval",
+          "label": "Interval",
+          "default": "per month"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Our most popular subscription box with a selection of our best-selling soaps delivered to your door."
+        },
+        {
+          "type": "text",
+          "id": "feature_1",
+          "label": "Feature 1",
+          "default": "3 full-size soap bars"
+        },
+        {
+          "type": "text",
+          "id": "feature_2",
+          "label": "Feature 2",
+          "default": "New scents each month"
+        },
+        {
+          "type": "text",
+          "id": "feature_3",
+          "label": "Feature 3",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "feature_4",
+          "label": "Feature 4",
+          "default": "Cancel anytime"
+        },
+        {
+          "type": "text",
+          "id": "feature_5",
+          "label": "Feature 5",
+          "default": "Exclusive subscriber discounts"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Subscribe Now"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL",
+          "default": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subscription Services",
+      "category": "Custom Content",
+      "blocks": [
+        {
+          "type": "subscription",
+          "settings": {
+            "title": "Monthly Box",
+            "subtitle": "Perfect for regular soap users",
+            "price": "$24.99",
+            "interval": "per month",
+            "description": "Our most popular subscription box with a selection of our best-selling soaps delivered to your door.",
+            "feature_1": "3 full-size soap bars",
+            "feature_2": "New scents each month",
+            "feature_3": "Free shipping",
+            "feature_4": "Cancel anytime",
+            "feature_5": "Exclusive subscriber discounts",
+            "button_text": "Subscribe Now",
+            "button_url": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"
+          }
+        },
+        {
+          "type": "subscription",
+          "settings": {
+            "title": "Bi-Monthly Box",
+            "subtitle": "Perfect for occasional users",
+            "price": "$24.99",
+            "interval": "every 2 months",
+            "description": "Perfect for those who use soap more slowly. Get our premium selection delivered every other month.",
+            "feature_1": "3 full-size soap bars",
+            "feature_2": "Seasonal scents",
+            "feature_3": "Free shipping",
+            "feature_4": "Cancel anytime",
+            "feature_5": "Exclusive subscriber discounts",
+            "button_text": "Subscribe Now",
+            "button_url": "https://soapyfluffs.com/apps/subscriptions/bb/BRdlU5zR"
+          }
+        },
+        {
+          "type": "subscription",
+          "settings": {
+            "title": "Gift Giver Box",
+            "subtitle": "Perfect for sharing",
+            "price": "$29.99",
+            "interval": "every 2 months",
+            "description": "Our premium gift box subscription, perfect for those who love to share quality soaps with friends and family.",
+            "feature_1": "4 full-size soap bars",
+            "feature_2": "Premium gift packaging",
+            "feature_3": "Free shipping",
+            "feature_4": "Cancel anytime",
+            "feature_5": "Personalized gift note",
+            "button_text": "Subscribe Now",
+            "button_url": "https://soapyfluffs.com/apps/subscriptions/bb/87U2K7p4"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

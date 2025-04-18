@@ -1,0 +1,194 @@
+{% comment %}
+  Collection Page Template for SoapyFluffs - Based on Wokiee theme
+  Implements logical product categorization and filtering
+{% endcomment %}
+
+<div class="collection-template">
+  <div class="collection-header">
+    <div class="container">
+      <h1 class="collection-header__title">{{ collection.title }}</h1>
+      
+      {% if collection.description != blank %}
+        <div class="collection-header__description">
+          {{ collection.description }}
+        </div>
+      {% endif %}
+      
+      <div class="collection-header__badges">
+        <span class="ohio-made-badge">Proudly Ohio Made</span>
+        <span class="male-owned-badge">Male-Owned Business</span>
+        <span class="free-sniffs-badge">FREE SNIFFS</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="collection-filters-container">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="collection-filters">
+            <div class="collection-filters__header">
+              <h3 class="collection-filters__title">Filter By</h3>
+              <button type="button" class="collection-filters__clear js-clear-filters">
+                Clear All
+              </button>
+            </div>
+            
+            <div class="collection-filter">
+              <h4 class="collection-filter__title js-filter-toggle">Scent Type</h4>
+              <div class="collection-filter__content">
+                <div class="collection-filter__options">
+                  {% for tag in collection.all_tags %}
+                    {% if tag contains 'scent:' %}
+                      {% assign scent = tag | remove: 'scent:' %}
+                      <div class="collection-filter__option">
+                        <input type="checkbox" id="filter-{{ tag | handle }}" class="js-filter" data-tag="{{ tag }}">
+                        <label for="filter-{{ tag | handle }}">{{ scent }}</label>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            
+            <div class="collection-filter">
+              <h4 class="collection-filter__title js-filter-toggle">Benefits</h4>
+              <div class="collection-filter__content">
+                <div class="collection-filter__options">
+                  {% for tag in collection.all_tags %}
+                    {% if tag contains 'benefit:' %}
+                      {% assign benefit = tag | remove: 'benefit:' %}
+                      <div class="collection-filter__option">
+                        <input type="checkbox" id="filter-{{ tag | handle }}" class="js-filter" data-tag="{{ tag }}">
+                        <label for="filter-{{ tag | handle }}">{{ benefit }}</label>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            
+            <div class="collection-filter">
+              <h4 class="collection-filter__title js-filter-toggle">Ingredients</h4>
+              <div class="collection-filter__content">
+                <div class="collection-filter__options">
+                  {% for tag in collection.all_tags %}
+                    {% if tag contains 'ingredient:' %}
+                      {% assign ingredient = tag | remove: 'ingredient:' %}
+                      <div class="collection-filter__option">
+                        <input type="checkbox" id="filter-{{ tag | handle }}" class="js-filter" data-tag="{{ tag }}">
+                        <label for="filter-{{ tag | handle }}">{{ ingredient }}</label>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            
+            <div class="collection-filter">
+              <h4 class="collection-filter__title js-filter-toggle">Price</h4>
+              <div class="collection-filter__content">
+                <div class="collection-filter__price-range">
+                  <div class="price-range-slider" data-min="0" data-max="50" data-step="5"></div>
+                  <div class="price-range-values">
+                    <span class="price-range-min">$0</span>
+                    <span class="price-range-max">$50</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-9">
+          <div class="collection-toolbar">
+            <div class="collection-toolbar__count">
+              {{ collection.products_count }} products
+            </div>
+            
+            <div class="collection-toolbar__sort">
+              <label for="SortBy" class="visually-hidden">Sort by</label>
+              <select id="SortBy" class="collection-toolbar__sort-select">
+                <option value="manual">Featured</option>
+                <option value="best-selling">Best Selling</option>
+                <option value="title-ascending">Alphabetically, A-Z</option>
+                <option value="title-descending">Alphabetically, Z-A</option>
+                <option value="price-ascending">Price, low to high</option>
+                <option value="price-descending">Price, high to low</option>
+                <option value="created-descending">Date, new to old</option>
+                <option value="created-ascending">Date, old to new</option>
+              </select>
+            </div>
+            
+            <div class="collection-toolbar__view">
+              <button type="button" class="collection-toolbar__view-button js-view-grid active" data-view="grid">
+                <span class="icon icon-grid"></span>
+              </button>
+              <button type="button" class="collection-toolbar__view-button js-view-list" data-view="list">
+                <span class="icon icon-list"></span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="collection-products">
+            <div class="row collection-products__grid">
+              {% for product in collection.products %}
+                <div class="col-6 col-md-4 collection-products__item">
+                  {% render 'product-card', product: product %}
+                </div>
+              {% else %}
+                <div class="col-12 collection-products__empty">
+                  <p>No products found in this collection</p>
+                </div>
+              {% endfor %}
+            </div>
+            
+            {% if paginate.pages > 1 %}
+              <div class="collection-pagination">
+                {% render 'pagination', paginate: paginate %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Template",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "label": "Show collection image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Show brand badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

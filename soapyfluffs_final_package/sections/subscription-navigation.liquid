@@ -1,0 +1,223 @@
+{% comment %}
+  Subscription Navigation Enhancement for SoapyFluffs - Based on Wokiee theme
+  Makes subscription options more visible throughout the site
+{% endcomment %}
+
+<div class="subscription-nav">
+  <div class="container">
+    <div class="subscription-nav__wrapper">
+      <div class="subscription-nav__title">
+        {{ section.settings.title }}
+      </div>
+      
+      <div class="subscription-nav__options">
+        {% for block in section.blocks %}
+          <a href="{{ block.settings.url }}" class="subscription-nav__option">
+            <div class="subscription-nav__option-icon">
+              {% case block.settings.icon %}
+                {% when 'box' %}
+                  <span class="icon icon-box"></span>
+                {% when 'gift' %}
+                  <span class="icon icon-gift"></span>
+                {% when 'calendar' %}
+                  <span class="icon icon-calendar"></span>
+                {% else %}
+                  <span class="icon icon-box"></span>
+              {% endcase %}
+            </div>
+            <div class="subscription-nav__option-content">
+              <div class="subscription-nav__option-title">{{ block.settings.title }}</div>
+              <div class="subscription-nav__option-subtitle">{{ block.settings.subtitle }}</div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .subscription-nav {
+    background-color: var(--kraft-paper);
+    padding: 15px 0;
+    margin-bottom: 30px;
+  }
+  
+  .subscription-nav__wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .subscription-nav__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-right: 30px;
+    padding-right: 30px;
+    border-right: 1px solid var(--dark-kraft);
+  }
+  
+  .subscription-nav__options {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  }
+  
+  .subscription-nav__option {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-right: 15px;
+    background-color: var(--text-light);
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .subscription-nav__option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .subscription-nav__option-icon {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+  }
+  
+  .subscription-nav__option-content {
+    flex-grow: 1;
+  }
+  
+  .subscription-nav__option-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+  
+  .subscription-nav__option-subtitle {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  @media (max-width: 767px) {
+    .subscription-nav__title {
+      width: 100%;
+      margin-right: 0;
+      padding-right: 0;
+      border-right: none;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .subscription-nav__options {
+      justify-content: center;
+    }
+    
+    .subscription-nav__option {
+      margin-bottom: 10px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Subscription Navigation",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Subscribe & Save"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subscription_option",
+      "name": "Subscription Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Monthly Box"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "3 soaps every month"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            }
+          ],
+          "default": "box"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL",
+          "default": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subscription Navigation",
+      "category": "Navigation",
+      "blocks": [
+        {
+          "type": "subscription_option",
+          "settings": {
+            "title": "Monthly Box",
+            "subtitle": "3 soaps every month",
+            "icon": "box",
+            "url": "https://soapyfluffs.com/apps/subscriptions/bb/c4kzRkhc"
+          }
+        },
+        {
+          "type": "subscription_option",
+          "settings": {
+            "title": "Bi-Monthly Box",
+            "subtitle": "3 soaps every 2 months",
+            "icon": "calendar",
+            "url": "https://soapyfluffs.com/apps/subscriptions/bb/BRdlU5zR"
+          }
+        },
+        {
+          "type": "subscription_option",
+          "settings": {
+            "title": "Gift Box",
+            "subtitle": "Perfect for sharing",
+            "icon": "gift",
+            "url": "https://soapyfluffs.com/apps/subscriptions/bb/87U2K7p4"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

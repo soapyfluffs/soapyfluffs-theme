@@ -1,0 +1,166 @@
+{% comment %}
+  Header section for SoapyFluffs - Based on Wokiee theme
+  Incorporates blue and kraft paper color scheme from product packaging
+{% endcomment %}
+
+<div class="announcement-bar">
+  <div class="container">
+    <div class="announcement-bar__content">
+      {% if section.settings.announcement_text != blank %}
+        {{ section.settings.announcement_text }}
+      {% else %}
+        FREE SHIPPING on orders over $50! Handmade in Ohio with ♥
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-3 logo-container">
+        {% if section.settings.logo != blank %}
+          <a href="/" class="site-header__logo-link">
+            <img 
+              src="{{ section.settings.logo | img_url: 'master' }}" 
+              alt="{{ shop.name }}" 
+              class="site-header__logo"
+              width="{{ section.settings.logo_width }}"
+              height="auto"
+              loading="lazy">
+          </a>
+        {% else %}
+          <a href="/" class="site-header__logo-text">{{ shop.name }}</a>
+        {% endif %}
+      </div>
+      
+      <div class="col-md-9 navigation-container">
+        <nav class="main-menu">
+          <ul class="main-menu__list">
+            {% for link in linklists[section.settings.main_menu].links %}
+              <li class="main-menu__item{% if link.active %} main-menu__item--active{% endif %}">
+                <a href="{{ link.url }}" class="main-menu__link">{{ link.title }}</a>
+                
+                {% if link.links.size > 0 %}
+                  <div class="mega-menu">
+                    <div class="container">
+                      <div class="row">
+                        {% for childlink in link.links %}
+                          <div class="col-md-3 mega-menu__column">
+                            <h3 class="mega-menu__title">{{ childlink.title }}</h3>
+                            
+                            {% if childlink.links.size > 0 %}
+                              <ul class="mega-menu__links">
+                                {% for grandchildlink in childlink.links %}
+                                  <li>
+                                    <a href="{{ grandchildlink.url }}">{{ grandchildlink.title }}</a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                            {% endif %}
+                          </div>
+                        {% endfor %}
+                        
+                        <div class="col-md-3 mega-menu__column">
+                          <div class="mega-menu__featured">
+                            <h4 class="mega-menu__featured-title">Featured Collection</h4>
+                            <img 
+                              src="{{ section.settings.featured_collection_image | img_url: '300x300', crop: 'center' }}" 
+                              alt="{{ section.settings.featured_collection_title }}" 
+                              class="mega-menu__featured-image"
+                              loading="lazy">
+                            <a href="{{ section.settings.featured_collection_url }}" class="btn-secondary btn-sm">Shop Now</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+        
+        <div class="header-actions">
+          <a href="/search" class="header-actions__search">
+            <span class="icon icon-search"></span>
+            <span class="visually-hidden">Search</span>
+          </a>
+          
+          <a href="/account" class="header-actions__account">
+            <span class="icon icon-user"></span>
+            <span class="visually-hidden">Account</span>
+          </a>
+          
+          <button type="button" class="header-actions__cart js-cart-drawer-trigger">
+            <span class="icon icon-cart"></span>
+            <span class="cart-count">{{ cart.item_count }}</span>
+            <span class="visually-hidden">Cart</span>
+          </button>
+          
+          <button type="button" class="header-actions__menu-toggle js-mobile-menu-toggle d-md-none">
+            <span class="icon icon-menu"></span>
+            <span class="visually-hidden">Menu</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 140
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "FREE SHIPPING on orders over $50! Handmade in Ohio with ♥"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_collection_image",
+      "label": "Featured collection image"
+    },
+    {
+      "type": "text",
+      "id": "featured_collection_title",
+      "label": "Featured collection title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "url",
+      "id": "featured_collection_url",
+      "label": "Featured collection URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "category": "Header"
+    }
+  ]
+}
+{% endschema %}
